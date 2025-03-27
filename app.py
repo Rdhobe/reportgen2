@@ -115,31 +115,14 @@ def upload_pdf_to_drive(file_path, folder_id=None):
     """Uploads a PDF file to Google Drive using a service account."""
     
     # Authenticate using Service Account
-    # Get service account JSON file path from environment variable
-    service_account_file = {
-  "type": os.getenv("TYPE"),
-  "project_id": os.getenv("PROJECT_ID"),
-  "private_key_id": os.getenv("PROJECT_KEY_ID"),
-  "private_key": os.getenv("PRIVETE_KEY"),
-  "client_email": os.getenv("CLIENT_EMAIL"),
-  "client_id": os.getenv("CLIENT_ID"),
-  "auth_uri": os.getenv("AUTH_URI"),
-  "token_uri": os.getenv("TOCKEN_URI"),
-  "auth_provider_x509_cert_url": os.getenv("AUTH_PROVIDER"),
-  "client_x509_cert_url": os.getenv("CLIENT_CERT_URI"),
-  "universe_domain": os.getenv("UNIVERSAL_DOMAIN")
-}
-    if not service_account_file:
-        raise ValueError("SERVICE_ACCOUNT_JSON environment variable is not set")
-    
-    # Authenticate using Service Account
     gauth = GoogleAuth()
-    gauth.settings['client_config_file'] = service_account_file
+    gauth.settings['client_config_file'] = "service_account.json"
     gauth.credentials = ServiceAccountCredentials.from_json_keyfile_name(
-        service_account_file,
+        "service_account.json",
         ["https://www.googleapis.com/auth/drive"]
     )
     gauth.Authorize()
+
     drive = GoogleDrive(gauth)
 
     # Create file metadata
